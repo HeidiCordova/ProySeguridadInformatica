@@ -23,11 +23,32 @@ class Usuario:
         return bcrypt.checkpw(clave.encode('utf-8'), self.clave)
     
     def cifrar_mfa_secret(self, mfa_secret):
-        """Cifra el secreto MFA usando Fernet."""
-        return cipher_suite.encrypt(mfa_secret.encode('utf-8'))
+        """Cifra y asigna el secreto MFA usando Fernet."""
+        if isinstance(mfa_secret, bytes):
+            mfa_secret = mfa_secret.decode('utf-8')  # Asegura que sea str
+        
+        clave_cifrada = cipher_suite.encrypt(mfa_secret.encode('utf-8'))
+        self.mfa_secret = clave_cifrada  # Asigna directamente
+        return clave_cifrada
 
     def descifrar_mfa_secret(self):
         """Descifra el secreto MFA usando Fernet."""
         if self.mfa_secret:
             return cipher_suite.decrypt(self.mfa_secret).decode('utf-8')
         return None
+    
+    @classmethod
+    def from_db_row(cls, row):
+        """
+        Constructor alternativo que permite crear un objeto Usuario
+        desde una fila de base de datos.
+        """
+        id, nombre, email, clave, rol, mfa_secret = row
+        return cls(
+            id=id,
+            nombre=nombre,
+            email=email,
+            clave=clave.encode('utf-8'),
+            rol=rol,
+            mfa_secret=mfa_secret.encode('utf-8') if mfa_secret else None
+        )

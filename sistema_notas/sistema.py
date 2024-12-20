@@ -60,7 +60,7 @@ class SistemaNotas:
     def autenticar_usuario(self, email, clave):
         conexion = self.get_db_connection()
         cursor = conexion.cursor()
-        cursor.execute('SELECT id, nombre, email, clave, rol FROM usuarios WHERE email = ?', (email,))
+        cursor.execute('SELECT id, nombre, email, clave, rol, mfa_secret FROM usuarios WHERE email = ?', (email,))
         usuario_data = cursor.fetchone()
         conexion.close()
 
@@ -104,6 +104,15 @@ class SistemaNotas:
             return Usuario(id, nombre, email, clave, rol, mfa_secret)
         
         return None
+    
+    def existe_usuario(self, usuario_id):
+        conexion = self.get_db_connection()
+        cursor = conexion.cursor()
+        cursor.execute('SELECT 1 FROM usuarios WHERE id = ?', (usuario_id,))
+        usuario_existe = cursor.fetchone() is not None
+        conexion.close()
+        return usuario_existe
+
 
 
 
@@ -143,7 +152,8 @@ class SistemaNotas:
         cursor.execute('SELECT contenido FROM notas WHERE usuario_id = ?', (usuario_id,))
         notas = cursor.fetchall()
         conexion.close()
-        return notas
+        # Retorna una lista de notas, o lista vacía si no hay notas
+        return [{"contenido": nota[0]} for nota in notas] if notas else []
 
 
 
@@ -168,31 +178,33 @@ class SistemaNotas:
 
 
     #multifactor
+    # Método para habilitar MFA
     def habilitar_mfa(self, usuario_id):
         conexion = self.get_db_connection()
         cursor = conexion.cursor()
-        cursor.execute(
-            'SELECT id, nombre, email, clave, rol FROM usuarios WHERE id = ?',
-            (usuario_id,)
-        )
-        usuario_data = cursor.fetchone()
-
-        if not usuario_data:
+        
+        usuario = self.obtener_usuario_por_id(usuario_id)
+        if not usuario:
             conexion.close()
             raise ValueError("Usuario no encontrado")
 
-        # Genera la clave secreta MFA
+        # Genera el secreto MFA
         secret = pyotp.random_base32()
 
-        # Actualiza la base de datos con la clave cifrada
+        # Cifra y asigna el secreto MFA
+        clave_cifrada = usuario.cifrar_mfa_secret(secret)
+
+        print("caacds: ", clave_cifrada.decode('utf-8'))
+        # Actualiza la base de datos
         cursor.execute(
             'UPDATE usuarios SET mfa_secret = ? WHERE id = ?',
-            (secret, usuario_id)
+            (clave_cifrada.decode('utf-8'), usuario_id)
         )
         conexion.commit()
         conexion.close()
 
-        # Genera la URL para la aplicación de autenticación
+        print("dsfa:::", self.obtener_usuario_por_id(usuario_id).cifrar_mfa_secret)
+        # Genera la URL del QR
         totp = pyotp.TOTP(secret)
         qr_url = totp.provisioning_uri(name=f"user_{usuario_id}", issuer_name="SistemaNotas")
 

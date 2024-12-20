@@ -102,6 +102,7 @@ def login():
     if isinstance(usuario, tuple):
         return usuario
 
+    print("CALAVE ",usuario.mfa_secret)
     if usuario.mfa_secret:
         return jsonify({
             "message": "Se requiere autenticación multifactor",
@@ -116,15 +117,16 @@ def login():
 # LISTAR NOTAS
 @app.route('/notas', methods=['GET'])
 def listar_notas():
+    """Lista las notas de un usuario dado su ID."""
     usuario_id = request.args.get('usuario_id')
     if not usuario_id:
         return manejar_error("Falta el ID del usuario", 400)
-
+    if not sistema.existe_usuario(usuario_id):
+        return manejar_error("El usuario no existe", 404)
     notas = sistema.obtener_notas_usuario(usuario_id)
-    if not notas:
-        return manejar_error("No se encontraron notas para este usuario", 404)
-
-    return jsonify([{"contenido": nota[0]} for nota in notas])
+    if not notas: 
+        return jsonify({"message": "Este usuario no tiene notas cargadas"}), 200
+    return jsonify(notas), 200
 
 
 # LISTAR USUARIOS
