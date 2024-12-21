@@ -180,32 +180,42 @@ class SistemaNotas:
     #multifactor
     # Método para habilitar MFA
     def habilitar_mfa(self, usuario_id):
+    # Establecer conexión con la base de datos
         conexion = self.get_db_connection()
         cursor = conexion.cursor()
         
-        usuario = self.obtener_usuario_por_id(usuario_id)
-        if not usuario:
+        try:
+            # Obtener el usuario
+            usuario = self.obtener_usuario_por_id(usuario_id)
+            if not usuario:
+                raise ValueError("Usuario no encontrado")
+
+            # Generar el secreto MFA
+            secret = pyotp.random_base32()
+            print("Secreto generado:", secret)
+            
+            # Cifrar y asignar el secreto MFA
+            clave_cifrada = usuario.cifrar_mfa(secret)
+            print("Secreto cifrado:", clave_cifrada)
+            print("Secreto descifrado:", usuario.descifrar_mfa())
+            
+            # Actualizar la base de datos con el secreto cifrado
+            cursor.execute(
+                'UPDATE usuarios SET mfa_secret = ? WHERE id = ?',
+                (clave_cifrada, usuario_id)
+            )
+            conexion.commit()
+
+            # Generar la URL para el QR Code
+            totp = pyotp.TOTP(secret)
+            qr_url = totp.provisioning_uri(name=f"user_{usuario_id}", issuer_name="SistemaNotas")
+
+            return {"secret": secret, "qr_url": qr_url}
+
+        except Exception as e:
+            # Manejo de excepciones (opcional)
+            raise e
+
+        finally:
+            # Asegurar el cierre de la conexión
             conexion.close()
-            raise ValueError("Usuario no encontrado")
-
-        # Genera el secreto MFA
-        secret = pyotp.random_base32()
-
-        # Cifra y asigna el secreto MFA
-        clave_cifrada = usuario.cifrar_mfa_secret(secret)
-
-        print("caacds: ", clave_cifrada.decode('utf-8'))
-        # Actualiza la base de datos
-        cursor.execute(
-            'UPDATE usuarios SET mfa_secret = ? WHERE id = ?',
-            (clave_cifrada.decode('utf-8'), usuario_id)
-        )
-        conexion.commit()
-        conexion.close()
-
-        print("dsfa:::", self.obtener_usuario_por_id(usuario_id).cifrar_mfa_secret)
-        # Genera la URL del QR
-        totp = pyotp.TOTP(secret)
-        qr_url = totp.provisioning_uri(name=f"user_{usuario_id}", issuer_name="SistemaNotas")
-
-        return {"secret": secret, "qr_url": qr_url}

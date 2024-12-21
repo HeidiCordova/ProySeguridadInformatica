@@ -44,18 +44,24 @@ def verificar_mfa_ruta():
     if not usuario or not usuario.mfa_secret:
         return manejar_error("Usuario no encontrado o MFA no habilitado", 404)
 
-    error = verificar_codigo_mfa(usuario, codigo_mfa)
-    if error:
-        return error
+    #Si tiene clave
+    print("DESCIFRADO:", usuario.mfa_secret, "  gaadfsafsda")
+    print("DESCIFRADO:", usuario.descifrar_mfa(), "  gaadfsafsda")
+    if usuario.mfa_secret:
+        try:
+            totp = pyotp.TOTP(usuario.descifrar_mfa())
+            print(usuario.id, "claceeee cifrada: ", usuario.descifrar_mfa())
+            if not totp.verify(codigo_mfa):
+                registrar_intento_fallido(usuario.email)
+                return manejar_error("Código MFA incorrecto", 401)
+        except Exception as e:
+            return manejar_error(f"Error al verificar MFA: {str(e)}", 500)
 
     reset_intentos(usuario.email)
     return jsonify({"message": "Inicio de sesión exitoso"}), 200
 
 
 # RUTA PARA HABILITAR MFA
-import qrcode
-import base64
-from io import BytesIO
 
 @app.route('/api/habilitarMFA', methods=['POST'])
 def habilitar_mfa():
@@ -228,16 +234,7 @@ def autenticar_usuario(email, clave):
     return usuario
 
 
-def verificar_codigo_mfa(usuario, codigo_mfa):
-    """Verifica el código MFA si está habilitado"""
-    if usuario.mfa_secret:
-        if not codigo_mfa:
-            return manejar_error("Se requiere el código MFA", 403)
-        totp = pyotp.TOTP(usuario.descifrar_mfa_secret())
-        if not totp.verify(codigo_mfa):
-            registrar_intento_fallido(usuario.email)
-            return manejar_error("Código MFA incorrecto", 401)
-    return None
+
 
 
 
