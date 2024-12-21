@@ -1,0 +1,30 @@
+.registro-container {
+    max-width: 500px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .registro-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .registro-container mat-form-field {
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .mfa-pregunta {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  

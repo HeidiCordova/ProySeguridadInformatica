@@ -1,0 +1,20 @@
+<!-- Fondo oscurecido -->
+<div class="mfa-backdrop">
+    <!-- Contenido de la ventana -->
+    <div class="mfa-modal-content">
+      <!-- Botón de cerrar con X -->
+      <button class="close-button" mat-button (click)="cerrar.emit()">X</button>
+  
+      <h3>Ingrese su código MFA</h3>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Código MFA</mat-label>
+        <input matInput [(ngModel)]="codigoMFA">
+      </mat-form-field>
+  
+      <div style="color:red;" *ngIf="mensajeError">{{mensajeError}}</div>
+  
+      <button mat-raised-button color="primary" (click)="verificar()">Verificar</button>
+    </div>
+  </div>
+  
