@@ -1,35 +1,51 @@
-<h2>Iniciar Sesión</h2>
-<form (ngSubmit)="login()">
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput [(ngModel)]="email" name="email" required />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Clave</mat-label>
-    <input matInput type="password" [(ngModel)]="clave" name="clave" required />
-  </mat-form-field>
-
-  <button mat-raised-button color="primary" type="submit">
-    Entrar
-  </button>
-</form>
-
-<div *ngIf="mensajeError" style="color:red;">{{ mensajeError }}</div>
-<div *ngIf="intentosRestantes !== null">Intentos restantes: {{ intentosRestantes }}</div>
-<div *ngIf="bloqueado" style="color:red;">Usuario bloqueado temporalmente. Inténtalo más tarde.</div>
-
-<!-- Preguntar habilitar MFA si el backend lo indica (mfa_can_enable) -->
-<div *ngIf="mostrarMfaPregunta" style="margin-top:10px;">
-  <p>¿Desea habilitar MFA?</p>
-  <button mat-button color="primary" (click)="activarMFA()">Sí</button>
-  <button mat-button color="warn" (click)="rechazarMFA()">No</button>
-</div>
-
-<!-- Ventana emergente para MFA si el usuario ya tiene MFA habilitada -->
-<app-mfa-modal
-  *ngIf="mostrarMfaModal"
-  [usuarioId]="usuarioId"
-  (verificado)="onMfaVerificado($event)"
-  (cerrar)="mostrarMfaModal=false">
-</app-mfa-modal>
+<div class="login-container">
+    <h2>Iniciar Sesión</h2>
+  
+    <form (ngSubmit)="login()">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required />
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Clave</mat-label>
+        <input matInput type="password" [(ngModel)]="clave" name="clave" required />
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit">
+        Entrar
+      </button>
+    </form>
+  
+    <!-- Mensaje de error general -->
+    <div *ngIf="mensajeError" class="error-message">
+      {{ mensajeError }}
+    </div>
+  
+    <!-- Intentos restantes -->
+    <div *ngIf="intentosRestantes !== null">
+      Intentos restantes: {{ intentosRestantes }}
+    </div>
+  
+    <!-- Bloqueo temporal -->
+    <div *ngIf="bloqueado" class="error-message">
+      Usuario bloqueado temporalmente. Inténtalo más tarde.
+    </div>
+  
+    <!-- Preguntar habilitar MFA si el backend lo indica (mfa_can_enable) -->
+    <div *ngIf="mostrarMfaPregunta" style="margin-top:15px;">
+      <p>¿Desea habilitar MFA?</p>
+      <button mat-button color="primary" (click)="activarMFA()">Sí</button>
+      <button mat-button color="warn" (click)="rechazarMFA()">No</button>
+    </div>
+  
+    <!-- Ventana emergente para MFA si el usuario ya tiene MFA habilitada -->
+    <app-mfa-modal
+      *ngIf="mostrarMfaModal"
+      [usuarioId]="usuarioId"
+      (verificado)="onMfaVerificado($event)"
+      (cerrar)="mostrarMfaModal=false"
+    >
+    </app-mfa-modal>
+  </div>
+  
