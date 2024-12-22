@@ -1,8 +1,23 @@
 import bcrypt
 from cryptography.fernet import Fernet
+import os
 
-# Clave de cifrado constante (debe almacenarse en un lugar seguro)
-FERNET_KEY = Fernet.generate_key()
+# Ruta del archivo donde se almacena la clave
+CLAVE_PATH = "clave_fernet.key"
+
+# Función para cargar o generar la clave
+def cargar_o_generar_clave():
+    if os.path.exists(CLAVE_PATH):
+        with open(CLAVE_PATH, "rb") as archivo_clave:
+            return archivo_clave.read()
+    else:
+        clave = Fernet.generate_key()
+        with open(CLAVE_PATH, "wb") as archivo_clave:
+            archivo_clave.write(clave)
+        return clave
+
+
+FERNET_KEY = cargar_o_generar_clave()
 CIFRADOR_GLOBAL = Fernet(FERNET_KEY)
 
 class Usuario:
