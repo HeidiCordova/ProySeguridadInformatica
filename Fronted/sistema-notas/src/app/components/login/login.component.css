@@ -1,6 +1,6 @@
-.login-container {
-    max-width: 400px;
-    margin: 50px auto;
+  .login-container {
+    max-width: 500px;
+    margin: 30px auto;
     background: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -8,8 +8,8 @@
   }
   
   .login-container h2 {
-    margin-bottom: 20px;
     text-align: center;
+    margin-bottom: 20px;
   }
   
   .login-container mat-form-field {
@@ -22,4 +22,38 @@
     color: red;
     margin-top: 10px;
   }
+
+  /* Separación para la pregunta de MFA */
+  .mfa-pregunta {
+    margin-top: 20px;
+    text-align: center;
+  }
   
+  /* Sección donde mostramos el QR devuelto */
+  .qr-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .qr-section code {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+    background-color: #f4f4f4;
+    padding: 5px 8px;
+    border-radius: 4px;
+  }
+  
+  .qr-section img {
+    margin-top: 10px;
+    max-width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* seccion de boton continuar */
+  .botonContinuar {
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    justify-content: center;  
+  }

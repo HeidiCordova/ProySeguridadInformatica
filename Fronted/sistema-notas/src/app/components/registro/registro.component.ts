@@ -39,6 +39,7 @@ export class RegistroComponent {
 
   // Guardamos ID del usuario tras registro, para habilitar MFA
   usuarioId: number | null = null;
+  logueado = false;
 
   constructor(
     private authService: AuthService,
@@ -74,6 +75,8 @@ export class RegistroComponent {
         // Esperamos { message, qr_url, qr_image_base64 }
         this.qrUrl = res.qr_url;
         this.qrImageBase64 = res.qr_image_base64;
+        this.mostrarMfaPregunta = false;
+        this.logueado = true;
       },
       error: (err) => {
         this.mensajeError = err.error?.error || 'Error al habilitar MFA';
@@ -85,5 +88,26 @@ export class RegistroComponent {
   noHabilitarMFA() {
     // Redirigir al login para que use el nuevo usuario
     this.router.navigate(['/login']);
+  }
+
+  continuar() {
+    // Redirigir al login para que use el nuevo usuario
+    this.ingresarSegunRol(this.rol!);
+  }
+  
+  ingresarSegunRol(rol: string) {
+    this.authService.setCurrentUser({ email: this.email, rol, id: this.usuarioId });
+    if (rol === 'admin') {
+      this.router.navigate(['/dashboard-admin']);
+    } else if (rol === 'profesor') {
+      this.router.navigate(['/dashboard-profesor']);
+    } else {
+      // Se asume 'estudiante' o cualquier otro
+      this.router.navigate(['/dashboard-estudiante']);
+    }
+  }
+
+  recargarPagina() {
+    window.location.reload(); // Recarga la página actual
   }
 }

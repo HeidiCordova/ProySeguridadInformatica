@@ -28,10 +28,14 @@ export class LoginComponent {
   mensajeError = '';
   intentosRestantes: number | null = null;
   bloqueado = false;
+  logueado = false;
 
   // Control de MFA
-  mostrarMfaModal = false;
+  mostrarMfaModal = false;  
+  // Control de MFA
   mostrarMfaPregunta = false;
+  qrUrl: string | null = null;
+  qrImageBase64: string | null = null;
 
   usuarioId: number | null = null;
   rol: string | null = null;
@@ -69,7 +73,7 @@ export class LoginComponent {
           this.mostrarMfaPregunta = true;
         } else {
           // Login normal (sin MFA ni oferta)
-          this.finalizarLogin(this.rol!);
+          this.ingresarSegunRol(this.rol!);
         }
       },
       error: (err) => this.manejarErrorLogin(err)
@@ -81,21 +85,23 @@ export class LoginComponent {
     if (exito) {
       // MFA correcta => cerrar el modal y finalizar
       this.mostrarMfaModal = false;
-      this.finalizarLogin(this.rol!);
+      this.ingresarSegunRol(this.rol!);
     } else {
       // MFA incorrecta => el modal muestra error, no navega
     }
   }
 
-  // Preguntar si el usuario quiere habilitar MFA
-  activarMFA() {
+  // Si el usuario decide habilitar MFA
+  habilitarMFA() {
     if (!this.usuarioId) return;
+
     this.authService.habilitarMFA(this.usuarioId).subscribe({
-      next: () => {
-        // Asumiendo que se generó el QR, etc. 
-        // Podrías mostrar un mensaje o redirigir. 
-        alert('MFA habilitada. Configura tu autenticador.');
-        this.finalizarLogin(this.rol!);
+      next: (res: any) => {
+        // Esperamos { message, qr_url, qr_image_base64 }
+        this.qrUrl = res.qr_url;
+        this.qrImageBase64 = res.qr_image_base64;
+        this.mostrarMfaPregunta = false;
+        this.logueado = true;
       },
       error: (err) => {
         this.mensajeError = err.error?.error || 'Error al habilitar MFA';
@@ -103,11 +109,17 @@ export class LoginComponent {
     });
   }
 
-  rechazarMFA() {
-    this.finalizarLogin(this.rol!);
+  // Si el usuario NO quiere habilitar MFA
+  noHabilitarMFA() {
+    // Redirigir al login para que use el nuevo usuario
+    this.ingresarSegunRol(this.rol!);
   }
-
-  finalizarLogin(rol: string) {
+  continuar() {
+    // Redirigir al login para que use el nuevo usuario
+    this.ingresarSegunRol(this.rol!);
+  }
+  
+  ingresarSegunRol(rol: string) {
     this.authService.setCurrentUser({ email: this.email, rol, id: this.usuarioId });
     if (rol === 'admin') {
       this.router.navigate(['/dashboard-admin']);
@@ -128,5 +140,8 @@ export class LoginComponent {
     if (match) {
       this.intentosRestantes = parseInt(match[1], 10);
     }
+  }
+  recargarPagina() {
+    window.location.reload(); // Recarga la página actual
   }
 }

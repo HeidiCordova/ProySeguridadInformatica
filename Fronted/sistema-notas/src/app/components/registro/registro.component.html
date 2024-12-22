@@ -27,9 +27,12 @@
         </mat-select>
       </mat-form-field>
   
-      <button mat-raised-button color="primary" type="submit">
-        Registrarse
-      </button>
+      
+      <div *ngIf="logueado == false">
+        <button mat-raised-button color="primary" type="submit">
+          Registrarse
+        </button>
+      </div>
     </form>
   
     <!-- Mensaje de error general -->
@@ -43,15 +46,18 @@
       <button mat-button color="primary" (click)="habilitarMFA()">Sí</button>
       <button mat-button color="warn" (click)="noHabilitarMFA()">No</button>
     </div>
+    
+    <!-- LOGUEADO -->
+    <div *ngIf="logueado" class="qr-section">
+      <button mat-button color="warn" class="botonContinuar" (click)="continuar()">Ir a mi Dashboard</button>
+    </div>
   
     <!-- Si ya se habilitó MFA y el backend devolvió el QR -->
     <div *ngIf="qrUrl && qrImageBase64" class="qr-section">
-      <p>URL TOTP (opcional, para apps que aceptan URL directamente):</p>
+      <p>URL TOTP: </p>
       <code>{{ qrUrl }}</code>
-  
       <p>
-        Escanea este código con tu app de autenticación
-        (Google Authenticator, etc.):
+        Escanea este código con tu app de autenticación:
       </p>
       <img [src]="'data:image/png;base64,' + qrImageBase64" alt="QR Code MFA" />
     </div>

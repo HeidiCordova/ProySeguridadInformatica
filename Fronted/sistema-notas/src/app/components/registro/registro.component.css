@@ -18,13 +18,42 @@
     margin-bottom: 16px;
   }
   
-  .mfa-pregunta {
-    margin-top: 20px;
-    text-align: center;
-  }
-  
   .error-message {
     color: red;
     margin-top: 10px;
   }
   
+  /* Separación para la pregunta de MFA */
+  .mfa-pregunta {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  /* Sección donde mostramos el QR devuelto */
+  .qr-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .qr-section code {
+    display: block;
+    margin-bottom: 10px;
+    color: #555;
+    background-color: #f4f4f4;
+    padding: 5px 8px;
+    border-radius: 4px;
+  }
+  
+  .qr-section img {
+    margin-top: 10px;
+    max-width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* seccion de boton continuar */
+  .botonContinuar {
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    justify-content: center;  
+  }
