@@ -133,6 +133,30 @@ class SistemaNotas:
         permisos = cursor.fetchone()
         conexion.close()
         return permisos and permiso in permisos[0].split(',')
+    
+    def obtener_estudiantes(self):
+        try:
+            # Conexión a la base de datos
+            conexion = self.get_db_connection()
+            cursor = conexion.cursor()
+
+            # Consulta para obtener a los estudiantes
+            cursor.execute("SELECT id, nombre, email FROM usuarios WHERE rol = 'estudiante'")
+            estudiantes = cursor.fetchall()
+
+            # Cierre de la conexión
+            conexion.close()
+
+            # Retornar una lista de estudiantes estructurada
+            return [{"id": e[0], "nombre": e[1], "email": e[2]} for e in estudiantes]
+
+        except sqlite3.Error as e:
+            # Manejo de errores específicos de SQLite
+            return {"error": f"Error de base de datos: {str(e)}"}
+        
+        except Exception as e:
+            # Manejo de otros errores
+            return {"error": f"Error inesperado: {str(e)}"}
 
 
 
@@ -154,6 +178,34 @@ class SistemaNotas:
         conexion.close()
         # Retorna una lista de notas, o lista vacía si no hay notas
         return [{"contenido": nota[0]} for nota in notas] if notas else []
+    
+
+    def asignarNotaPorEmail(self, email, contenido):
+        conexion = self.get_db_connection()
+        cursor = conexion.cursor()
+        cursor.execute('SELECT id FROM usuarios WHERE email = ?', (email,))
+        usuario_data = cursor.fetchone()
+
+        if usuario_data is None:
+            conexion.close()
+            return {"error": "Usuario no encontrado"}
+
+        usuario_id = usuario_data[0]
+
+        try:
+            cursor.execute('INSERT INTO notas (contenido, usuario_id) VALUES (?, ?)', (contenido, usuario_id))
+            conexion.commit()
+            conexion.close()
+            return {"success": "Nota asignada exitosamente"}
+        except sqlite3.Error as e:
+            # Manejo de errores específicos de SQLite
+            conexion.close()
+            return {"error": f"Error de base de datos: {str(e)}"}
+        except Exception as e:
+            # Manejo de cualquier otro error inesperado
+            conexion.close()
+            return {"error": f"Error inesperado: {str(e)}"}
+
 
 
 

@@ -1,0 +1,49 @@
+/* Contenedor principal */
+.inicio-container {
+  text-align: center; /* Centra todo el contenido */
+  margin-top: 100px; /* Espaciado desde la parte superior */
+  padding: 20px; /* Espaciado interno */
+  font-family: Arial, sans-serif; /* Fuente moderna y simple */
+}
+
+/* Título */
+.inicio-container h1 {
+  font-size: 2rem; /* Tamaño adecuado para el título */
+  margin-bottom: 20px; /* Espaciado inferior */
+  color: #333; /* Color oscuro para buena legibilidad */
+  font-weight: bold; /* Destacar el título */
+}
+
+/* Botones */
+.inicio-container button {
+  padding: 12px 24px; /* Espaciado interno amplio */
+  margin: 0 10px; /* Espaciado entre botones */
+  font-size: 1rem; /* Tamaño de texto legible */
+  border: none; /* Sin bordes */
+  border-radius: 25px; /* Botones redondeados */
+  cursor: pointer; /* Cursor de clic */
+  transition: all 0.3s ease; /* Transición suave para efectos */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Botón: Iniciar Sesión */
+.inicio-container button[color="primary"] {
+  background-color: #007bff; /* Azul primario */
+  color: white; /* Texto blanco */
+}
+
+.inicio-container button[color="primary"]:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+/* Botón: Registrarse */
+.inicio-container button[color="accent"] {
+  background-color: #6c757d; /* Gris elegante */
+  color: white; /* Texto blanco */
+}
+
+.inicio-container button[color="accent"]:hover {
+  background-color: #5a6268; /* Gris más oscuro al pasar el mouse */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}

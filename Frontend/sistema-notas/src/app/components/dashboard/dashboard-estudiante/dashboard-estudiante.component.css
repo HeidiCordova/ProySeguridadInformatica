@@ -1,0 +1,54 @@
+/* Contenedor principal del panel de estudiante */
+.student-dashboard {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px; /* Tamaño máximo para centrado */
+  background-color: #f9f9f9; /* Fondo claro */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera para destacar */
+  text-align: center; /* Centra el contenido dentro */
+}
+
+/* Encabezado del dashboard */
+.dashboard-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-header h2 {
+  font-size: 24px; /* Tamaño del título */
+  color: #333; /* Color del título */
+  margin-bottom: 10px;
+}
+
+.dashboard-header p {
+  font-size: 16px; /* Tamaño del subtítulo */
+  color: #666; /* Color más suave para el texto */
+  margin: 0;
+}
+
+/* Contenedor del contenido del dashboard */
+.dashboard-content {
+  margin-top: 20px;
+}
+
+/* Botón de acción */
+.action-button {
+  padding: 10px 20px;
+  background-color: #007bff; /* Azul brillante */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+}
+
+.action-button:active {
+  background-color: #004080; /* Azul aún más oscuro al hacer clic */
+  transform: scale(0.98); /* Efecto de presión */
+}

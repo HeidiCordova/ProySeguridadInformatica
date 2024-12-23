@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="mis-notas">
+  <div class="notas-header">
+    <h2>Mis Notas</h2>
+  </div>
+  <div class="notas-content">
+    <div class="no-notas" *ngIf="notas.length === 0">
+      <p>No tienes notas disponibles</p>
+    </div>
+    <ul class="notas-list" *ngIf="notas.length > 0">
+      <li class="nota-item" *ngFor="let nota of notas">
+        <p>{{ nota.contenido }}</p>
+      </li>
+    </ul>
+  </div>
+</div>

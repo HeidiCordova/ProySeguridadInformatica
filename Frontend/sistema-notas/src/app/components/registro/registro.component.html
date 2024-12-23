@@ -1,0 +1,65 @@
+<div class="registro-container">
+    <h2>Registro de Usuario</h2>
+  
+    <!-- Formulario de Registro -->
+    <form (ngSubmit)="onRegister()">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="nombre" name="nombre" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" name="email" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Clave</mat-label>
+        <input matInput type="password" [(ngModel)]="clave" name="clave" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Rol</mat-label>
+        <mat-select [(ngModel)]="rol" name="rol" required>
+          <mat-option value="admin">Administrador</mat-option>
+          <mat-option value="profesor">Profesor</mat-option>
+          <mat-option value="estudiante">Estudiante</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      
+      <div *ngIf="logueado == false">
+        <button mat-raised-button color="primary" type="submit">
+          Registrarse
+        </button>
+      </div>
+    </form>
+  
+    <!-- Mensaje de error general -->
+    <div *ngIf="mensajeError" class="error-message">
+      {{ mensajeError }}
+    </div>
+  
+    <!-- Se muestra cuando se completó el registro y tenemos userId -->
+    <div *ngIf="mostrarMfaPregunta" class="mfa-pregunta">
+      <p>¿Deseas habilitar MFA?</p>
+      <button mat-button color="primary" (click)="habilitarMFA()">Sí</button>
+      <button mat-button color="warn" (click)="continuar()">No</button>
+    </div>
+    
+    <!-- LOGUEADO -->
+    <div *ngIf="logueado" class="qr-section">
+      <button mat-button color="warn" class="botonContinuar" (click)="continuar()">Ir a mi Dashboard</button>
+    </div>
+  
+    <!-- Si ya se habilitó MFA y el backend devolvió el QR -->
+    <div *ngIf="qrUrl && qrImageBase64" class="qr-section">
+      <p>URL TOTP: </p>
+      <code>{{ qrUrl }}</code>
+      <p>
+        Escanea este código con tu app de Google Authenticator:
+      </p>
+      <img [src]="'data:image/png;base64,' + qrImageBase64" alt="QR Code MFA" />
+    </div>
+  </div>
+  

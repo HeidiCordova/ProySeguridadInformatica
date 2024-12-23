@@ -7,13 +7,19 @@ import qrcode
 import base64
 from io import BytesIO
 from sistema_notas.sistema import SistemaNotas
+import os
 
 
 # Configuración de la aplicación Flask
 app = Flask(__name__)
 CORS(app) 
 sistema = SistemaNotas()
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
+
+#===REDIS===(Para usar sin docker, comentar las siguientes 3 lineas y descomentar la cuarta)
+redis_host = os.getenv("REDIS_HOST", "redis")  # Por defecto usa 'redis'
+redis_port = int(os.getenv("REDIS_PORT", 6379))  # Por defecto usa 6379
+redis_client = redis.StrictRedis(host=redis_host, port=redis_port, db=0, decode_responses=True)
+#redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
 
 # Configuración de seguridad
 BLOQUEO_TIEMPO = 300  # 5 minutos
@@ -105,7 +111,7 @@ def habilitar_mfa():
 
 
 
-# RUTA PARA AGREGAR USUARIO
+# RUTA PARA REGISTRAR USUARIO
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.json
@@ -192,6 +198,39 @@ def listar_usuarios():
     return jsonify(usuarios)
 
 
+# RUTA PARA LISTAR TODOS LOS ESTUDIANTES
+@app.route('/api/estudiantes', methods=['GET'])
+def listar_estudiantes():
+    """Lista todos los estudiantes registrados en el sistema."""
+    estudiantes = sistema.obtener_estudiantes()
+    if "error" in estudiantes:
+        return manejar_error(estudiantes["error"], 500)
+    if not estudiantes:
+        return jsonify({"message": "No hay estudiantes registrados"}), 200
+    return jsonify(estudiantes), 200
+
+
+# RUTA PARA ASIGNAR NOTA A UN ESTUDIANTE
+@app.route('/api/asignarNotaPorEmail', methods=['POST'])
+def asignar_nota_por_email():
+    data = request.json
+    email = data.get('email')
+    contenido = data.get('contenido')
+
+    if not email or not contenido:
+        return manejar_error("El email y el contenido de la nota son requeridos", 400)
+
+    # Buscar al usuario por email
+    resultado = sistema.asignarNotaPorEmail(email, contenido)
+    if "error" in resultado:
+        return manejar_error(resultado["error"], 400)
+
+    return jsonify(resultado), 200
+
+
+
+
+
 
 # ================== FUNCIONES AUXILIARES ==================
 
@@ -241,4 +280,5 @@ def autenticar_usuario(email, clave):
 # INICIAR APLICACIÓN
 if __name__ == '__main__':
     app.run(debug=True)
+
 

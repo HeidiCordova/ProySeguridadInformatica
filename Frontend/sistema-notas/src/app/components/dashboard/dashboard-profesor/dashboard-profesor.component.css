@@ -1,0 +1,132 @@
+.profesor-dashboard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dashboard-content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+}
+
+.dashboard-card {
+  width: 300px; /* Mantener tamaño consistente */
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h3 {
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.mostrarEstudiantes {
+  margin-top: 30px;
+  width: calc(300px * 3); /* Tamaño adaptado a las tarjetas (3 tarjetas de 300px aprox.) */
+  max-width: 90%; /* Limitar el ancho en pantallas grandes */
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Suavidad para que combine con las tarjetas */
+  overflow-x: auto; /* Agregar scroll horizontal en caso necesario */
+}
+
+.mostrarEstudiantes h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+thead {
+  background-color: #007bff;
+  color: white;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-size: 16px;
+}
+
+tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+tbody tr:hover {
+  background-color: #f1f1f1; /* Color más claro al pasar el mouse */
+}
+form {
+  margin-top: 10px;
+}
+
+form div {
+  margin-bottom: 15px;
+}
+
+input {
+  width: calc(100% - 20px); /* Asegura que el input no se desborde */
+  padding: 10px; /* Mejora la apariencia interna */
+  margin-top: 5px; /* Espacio entre label y input */
+  border: 1px solid #ccc; /* Borde suave */
+  border-radius: 4px; /* Bordes redondeados para consistencia */
+  box-sizing: border-box; /* Ajusta el tamaño incluyendo padding y borde */
+  font-size: 14px; /* Tamaño de fuente legible */
+}
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.success {
+  color: green;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}

@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h2>Panel de Administrador</h2>
+    <p>Aquí puedes administrar usuarios, ver estadísticas, etc.</p>
+  </div>
+  
+  <div class="dashboard-content">
+    <!-- Tarjeta Usuarios -->
+    <div class="dashboard-card">
+      <h3>Usuarios</h3>
+      <p>Administra los usuarios de tu plataforma.</p>
+      <button (click)="cargarUsuarios()">Ver Usuarios</button>
+    </div>
+    
+    <!-- Tarjeta Estadísticas -->
+    <div class="dashboard-card">
+      <h3>Estadísticas</h3>
+      <p>Revisa las estadísticas de uso.</p>
+    </div>
+    
+    <!-- Tarjeta Configuraciones -->
+    <div class="dashboard-card">
+      <h3>Configuraciones</h3>
+      <p>Ajusta las configuraciones del sistema.</p>
+    </div>
+  </div>
+
+  <!-- Sección para mostrar la lista de usuarios -->
+  <div class="mostrarUsuarios" *ngIf="mostrarUsuarios">
+    <h2>Lista de Usuarios</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuarios">
+          <td>{{ usuario.id }}</td>
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>{{ usuario.rol }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

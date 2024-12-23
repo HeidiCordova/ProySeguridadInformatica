@@ -1,0 +1,68 @@
+<div class="login-container">
+    <h2>Iniciar Sesión</h2>
+  
+    <form (ngSubmit)="login()">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="email" name="email" required />
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label>Clave</mat-label>
+        <input matInput type="password" [(ngModel)]="clave" name="clave" required />
+      </mat-form-field>
+  
+      <div *ngIf="logueado == false">
+        <button mat-raised-button color="primary" type="submit">
+          Entrar
+        </button>
+      </div>
+    </form>
+  
+    <!-- Mensaje de error general -->
+    <div *ngIf="mensajeError" class="error-message">
+      {{ mensajeError }}
+    </div>
+  
+    <!-- Intentos restantes -->
+    <div *ngIf="intentosRestantes !== null">
+      Intentos restantes: {{ intentosRestantes }}
+    </div>
+  
+    <!-- Bloqueo temporal -->
+    <div *ngIf="bloqueado" class="error-message">
+      Usuario bloqueado temporalmente. Inténtalo más tarde.
+    </div>
+  
+    <!-- Preguntar habilitar MFA si el backend lo indica (mfa_can_enable) -->
+    <div *ngIf="mostrarMfaPregunta" style="margin-top:15px;" class="qr-section">
+      <p>¿Desea habilitar MFA?</p>
+      <button mat-button color="primary" (click)="habilitarMFA()">Sí</button>
+      <button mat-button color="warn" (click)="noHabilitarMFA()">No</button>
+    </div>
+
+    <!-- LOGUEADO -->
+    <div *ngIf="logueado" class="qr-section">
+      <button mat-button color="warn" class="botonContinuar" (click)="continuar()">Ir a mi Dashboard</button>
+    </div>
+  
+    <!-- Ventana emergente para MFA si el usuario ya tiene MFA habilitada -->
+    <app-mfa-modal
+      *ngIf="mostrarMfaModal"
+      [usuarioId]="usuarioId"
+      (verificado)="onMfaVerificado($event)"
+      (cerrar)="mostrarMfaModal=false"
+    >
+    </app-mfa-modal>
+
+    <!-- Si ya se habilitó MFA y el backend devolvió el QR -->
+    <div *ngIf="qrUrl && qrImageBase64" class="qr-section">
+      <p>URL TOTP: </p>
+      <code>{{ qrUrl }}</code>
+      <p>
+        Escanea este código con tu app de Google Authenticator:
+      </p>
+      <img [src]="'data:image/png;base64,' + qrImageBase64" alt="QR Code MFA" />
+    </div>
+  </div>
+  

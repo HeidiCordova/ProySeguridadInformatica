@@ -10,6 +10,6 @@ if __name__ == "__main__":
 
     # Llamada a la función de autenticación
     usuario = sistema.autenticar_usuario(email, clave)
-    print(usuario.nombre)
+    sistema.asignarNotaPorEmail("mapodsfadsaft", "13")
     #usuario2 = sistema.obtener_usuario_por_id(1)
     #print(usuario2.nombre)

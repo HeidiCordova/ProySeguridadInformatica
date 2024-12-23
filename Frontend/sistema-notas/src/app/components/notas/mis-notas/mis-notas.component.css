@@ -1,0 +1,60 @@
+/* Contenedor principal de "Mis Notas" */
+.mis-notas {
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px; /* Ajustar a un tamaño adecuado */
+  background-color: #f9f9f9; /* Fondo claro */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  text-align: center; /* Centrar el contenido principal */
+}
+
+/* Encabezado de "Mis Notas" */
+.notas-header {
+  margin-bottom: 20px;
+}
+
+.notas-header h2 {
+  font-size: 24px; /* Tamaño del título */
+  color: #333; /* Color principal */
+  margin: 0; /* Sin espacio adicional */
+}
+
+/* Contenido principal */
+.notas-content {
+  margin-top: 10px;
+}
+
+/* Mensaje cuando no hay notas */
+.no-notas {
+  font-size: 16px; /* Tamaño de texto legible */
+  color: #666; /* Color más suave */
+  background-color: #fff; /* Fondo blanco */
+  padding: 15px;
+  border-radius: 5px; /* Bordes suaves */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Lista de notas */
+.notas-list {
+  list-style-type: none; /* Sin viñetas */
+  padding: 0; /* Sin margen ni relleno extra */
+  margin: 0;
+}
+
+.nota-item {
+  background-color: #fff; /* Fondo blanco */
+  margin-bottom: 10px; /* Espaciado entre notas */
+  padding: 15px;
+  border-radius: 5px; /* Bordes suaves */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  text-align: left; /* Alinear el contenido de las notas a la izquierda */
+}
+
+.nota-item p {
+  margin: 0; /* Sin márgenes adicionales */
+  font-size: 16px; /* Tamaño de texto legible */
+  color: #333; /* Color del texto */
+}
+
+  

@@ -1,0 +1,72 @@
+<app-navbar></app-navbar>
+<div class="profesor-dashboard">
+  <div class="dashboard-header">
+    <h2>Panel de Profesor</h2>
+    <p>Aquí puedes gestionar estudiantes y asignar notas.</p>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Tarjeta Estudiantes -->
+    <div class="dashboard-card">
+      <h3>Estudiantes</h3>
+      <p>Gestiona a los estudiantes registrados en el sistema.</p>
+      <button (click)="cargarEstudiantes()">Ver Estudiantes</button>
+    </div>
+
+    <!-- Tarjeta para asignar nota -->
+    <div class="dashboard-card">
+      <h3>Asignar Nota</h3>
+      <p>Asigna una nota a un estudiante por su Email.</p>
+      <form (submit)="asignarNota()">
+        <div>
+          <label for="nombre">Email del Estudiante</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            name="nombreEstudiante"
+            [(ngModel)]="nombreEstudiante" 
+            placeholder="Escribe el email" 
+            required
+          />
+        </div>
+        <div>
+          <label for="nota">Nota</label>
+          <input 
+            type="text" 
+            id="nota" 
+            name="notaContenido" 
+            [(ngModel)]="notaContenido" 
+            placeholder="Escribe la nota" 
+            required
+          />
+        </div>
+        <button type="submit">Asignar Nota</button>
+      </form>
+      
+      <p class="success" *ngIf="asignacionExitosa">{{ asignacionExitosa }}</p>
+      <p class="error" *ngIf="asignacionError">{{ asignacionError }}</p>
+    </div>
+  </div>
+
+  <!-- Tabla de Estudiantes -->
+  <div class="mostrarEstudiantes" *ngIf="mostrarEstudiantes">
+    <h2>Lista de Estudiantes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let estudiante of estudiantes">
+          <td>{{ estudiante.id }}</td>
+          <td>{{ estudiante.nombre }}</td>
+          <td>{{ estudiante.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
