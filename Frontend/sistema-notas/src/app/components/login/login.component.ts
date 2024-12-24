@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../services/auth.service';
 import { MfaModalComponent } from './mfa-modal/mfa-modal.component';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ import { MfaModalComponent } from './mfa-modal/mfa-modal.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MfaModalComponent
+    MfaModalComponent, 
+    NavbarComponent
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
