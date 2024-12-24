@@ -18,7 +18,8 @@ import { NavbarComponent } from '../../shared/navbar/navbar.component';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule
+    MatSelectModule, 
+    NavbarComponent
   ],
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css']
