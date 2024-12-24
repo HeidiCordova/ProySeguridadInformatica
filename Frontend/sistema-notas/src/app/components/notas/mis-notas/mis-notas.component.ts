@@ -7,7 +7,7 @@ import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 @Component({
   selector: 'app-mis-notas',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, NavbarComponent],
   templateUrl: './mis-notas.component.html',
   styleUrls: ['./mis-notas.component.css']
 })
